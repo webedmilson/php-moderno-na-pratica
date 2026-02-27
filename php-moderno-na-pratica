@@ -1,0 +1,166 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Exemplo de arquivo com funcionalidades modernas do PHP 8.1+
+ * - Tipagem forte
+ * - Union types
+ * - Match expression
+ * - Enum
+ * - Readonly class
+ * - Null coalescing assignment (??=)
+ * - Funções utilitárias e serviço com regras de negócio
+ */
+
+// Enum introduzido no PHP 8.1: ótimo para evitar strings "mágicas"
+enum StatusPedido: string
+{
+    case NOVO = 'novo';
+    case PROCESSANDO = 'processando';
+    case ENVIADO = 'enviado';
+    case ENTREGUE = 'entregue';
+}
+
+/**
+ * DTO imutável (readonly) para representar um produto.
+ * Readonly classes foram introduzidas no PHP 8.2.
+ */
+readonly class Produto
+{
+    public function __construct(
+        public int $id,
+        public string $nome,
+        public float $preco
+    ) {}
+}
+
+/**
+ * Serviço de domínio para operações com produto.
+ */
+final class ProdutoService
+{
+    /**
+     * Aplica desconto em percentual.
+     * Union type permite int|float no percentual.
+     */
+    public function aplicarDesconto(float $preco, int|float $percentual): float
+    {
+        if ($percentual < 0 || $percentual > 100) {
+            throw new InvalidArgumentException('Percentual deve estar entre 0 e 100.');
+        }
+
+        $desconto = $preco * ((float) $percentual / 100);
+        return round($preco - $desconto, 2);
+    }
+
+    /**
+     * Calcula total de uma lista de produtos com array_reduce.
+     *
+     * @param Produto[] $produtos
+     */
+    public function calcularTotal(array $produtos): float
+    {
+        return array_reduce(
+            $produtos,
+            fn (float $total, Produto $produto): float => $total + $produto->preco,
+            0.0
+        );
+    }
+}
+
+/**
+ * Formata valor monetário em Real (BRL).
+ */
+function formatarMoeda(float $valor): string
+{
+    return 'R$ ' . number_format($valor, 2, ',', '.');
+}
+
+/**
+ * Retorna uma mensagem amigável com base no status.
+ * match (PHP 8.0+) substitui vários if/else com mais clareza.
+ */
+function mensagemStatus(StatusPedido $status): string
+{
+    return match ($status) {
+        StatusPedido::NOVO => 'Pedido recebido e aguardando processamento.',
+        StatusPedido::PROCESSANDO => 'Pedido em preparação.',
+        StatusPedido::ENVIADO => 'Pedido saiu para transporte.',
+        StatusPedido::ENTREGUE => 'Pedido entregue com sucesso.',
+    };
+}
+
+/**
+ * Exemplo de fallback seguro para array aninhado.
+ */
+function obterCidadeCliente(?array $cliente): string
+{
+    // ??= define um padrão somente quando o valor estiver ausente ou nulo.
+    $cliente['endereco']['cidade'] ??= 'Cidade não informada';
+    return $cliente['endereco']['cidade'];
+}
+
+/**
+ * Valida versão mínima do PHP para uso destas funcionalidades.
+ */
+function validarVersaoPhpMinima(string $minima = '8.1.0'): bool
+{
+    return version_compare(PHP_VERSION, $minima, '>=');
+}
+
+/**
+ * Retorna um rótulo de prioridade com base em um score.
+ * Exemplo de match com comparação booleana.
+ */
+function classificarPrioridade(int $score): string
+{
+    return match (true) {
+        $score >= 80 => 'alta',
+        $score >= 50 => 'media',
+        default => 'baixa',
+    };
+}
+
+/**
+ * Exemplo prático de uso das funções acima.
+ */
+function executarDemo(): void
+{
+    if (!validarVersaoPhpMinima('8.2.0')) {
+        echo 'Sua versão do PHP é ' . PHP_VERSION . '. Atualize para 8.2+ para usar este arquivo.' . PHP_EOL;
+        return;
+    }
+
+    $service = new ProdutoService();
+
+    $produtos = [
+        new Produto(id: 1, nome: 'Teclado Mecânico', preco: 299.90),
+        new Produto(id: 2, nome: 'Mouse Gamer', preco: 149.90),
+        new Produto(id: 3, nome: 'Headset Wireless', preco: 399.90),
+    ];
+
+    $total = $service->calcularTotal($produtos);
+    $precoOriginal = 299.90;
+    $precoFinal = $service->aplicarDesconto(preco: $precoOriginal, percentual: 15);
+
+    $pedidoStatus = StatusPedido::PROCESSANDO;
+
+    $cliente = [
+        'nome' => 'Maria',
+        'endereco' => [
+            'cidade' => 'São Paulo',
+        ],
+    ];
+
+    echo 'Versão PHP atual: ' . PHP_VERSION . PHP_EOL;
+    echo 'Total dos produtos: ' . formatarMoeda($total) . PHP_EOL;
+    echo 'Preço original: ' . formatarMoeda($precoOriginal) . PHP_EOL;
+    echo 'Preço com desconto (15%): ' . formatarMoeda($precoFinal) . PHP_EOL;
+    echo 'Status: ' . mensagemStatus($pedidoStatus) . PHP_EOL;
+    echo 'Cidade do cliente: ' . obterCidadeCliente($cliente) . PHP_EOL;
+    echo 'Prioridade score 87: ' . classificarPrioridade(87) . PHP_EOL;
+}
+
+// Executa a demonstração quando este arquivo é chamado diretamente.
+executarDemo();
