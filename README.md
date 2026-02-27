@@ -1,44 +1,52 @@
-# PHP Moderno: Funcoes, Boas Praticas e Atualizacoes
+# 🚀 PHP Moderno na Prática
 
-Repositorio com exemplos reais de funcionalidades modernas do PHP 8.1+ e 8.2, com codigo comentado para estudo, entrevista tecnica e portifolio.
+Repositório com exemplos reais de funcionalidades modernas do **PHP 8.1+ e 8.2**, com código comentado para estudo, entrevistas técnicas e portfólio.
 
-## Objetivo
+---
+
+## 🎯 Objetivo
 
 Este projeto demonstra:
-- Organizacao de codigo orientado a regras de negocio
-- Uso de recursos atuais do PHP para escrever codigo mais seguro
-- Comentarios didaticos para facilitar manutencao e onboarding
+- ✅ Organização de código orientado a regras de negócio
+- ✅ Uso de recursos atuais do PHP para escrever código mais seguro
+- ✅ Comentários didáticos para facilitar manutenção e onboarding
 
-## Arquivo principal
+---
+
+## 📂 Arquivo Principal
 
 - `funcionalidades_php.php`
 
-## Funcionalidades implementadas
+---
 
-1. `declare(strict_types=1)`
-- Forca tipagem estrita e reduz bugs silenciosos de conversao.
+## 🧠 Funcionalidades Implementadas
 
-2. `enum StatusPedido`
-- Substitui strings soltas por um conjunto fechado de estados.
+### 1) `declare(strict_types=1)`
+🔒 Força tipagem estrita e reduz bugs silenciosos de conversão.
 
-3. `readonly class Produto` (PHP 8.2)
-- Garante imutabilidade do DTO apos construcao.
+### 2) `enum StatusPedido`
+🏷️ Substitui strings soltas por um conjunto fechado de estados.
 
-4. `ProdutoService`
-- Centraliza regras de negocio:
-  - `aplicarDesconto(float $preco, int|float $percentual): float`
-  - `calcularTotal(array $produtos): float`
+### 3) `readonly class Produto` (PHP 8.2)
+🧱 Garante imutabilidade do DTO após construção.
 
-5. `match expression`
-- Usado em `mensagemStatus()` e `classificarPrioridade()` para condicoes mais legiveis.
+### 4) `ProdutoService`
+⚙️ Centraliza regras de negócio:
+- `aplicarDesconto(float $preco, int|float $percentual): float`
+- `calcularTotal(array $produtos): float`
 
-6. `null coalescing assignment (??=)`
-- Usado em `obterCidadeCliente()` para fallback seguro de valores.
+### 5) `match expression`
+🧩 Usado em `mensagemStatus()` e `classificarPrioridade()` para condições mais legíveis.
 
-7. Validacao de versao
-- `validarVersaoPhpMinima()` evita executar recursos nao suportados.
+### 6) `null coalescing assignment (??=)`
+🛟 Usado em `obterCidadeCliente()` para fallback seguro de valores.
 
-## Como executar
+### 7) Validação de versão
+📌 `validarVersaoPhpMinima()` evita executar recursos não suportados.
+
+---
+
+## ▶️ Como Executar
 
 ### Requisito
 - PHP `8.2+`
@@ -48,34 +56,46 @@ Este projeto demonstra:
 php funcionalidades_php.php
 ```
 
-### Saida esperada (exemplo)
+### Saída esperada (exemplo)
 ```text
-Versao PHP atual: 8.2.x
+Versão PHP atual: 8.2.x
 Total dos produtos: R$ 849,70
-Preco original: R$ 299,90
-Preco com desconto (15%): R$ 254,92
-Status: Pedido em preparacao.
-Cidade do cliente: Sao Paulo
+Preço original: R$ 299,90
+Preço com desconto (15%): R$ 254,92
+Status: Pedido em preparação.
+Cidade do cliente: São Paulo
 Prioridade score 87: alta
 ```
 
-## Estrategia para manter o GitHub atualizado
+---
 
-Para mostrar consistencia tecnica e autoridade:
+## 📈 Estratégia Para Manter o GitHub Atualizado
 
-1. Publique uma melhoria pequena por semana.
-2. Use commits com padrao semantico (`feat:`, `refactor:`, `docs:`, `test:`).
-3. Sempre atualize o README quando adicionar recurso novo.
-4. Crie uma tag mensal (`v1.0.0`, `v1.1.0`) com changelog curto.
-5. Abra `Issues` com roadmap e feche conforme evolucao.
+Para fortalecer autoridade técnica:
 
-## Sugestoes de proximos passos
+1. 🗓️ Publique uma melhoria pequena por semana
+2. 🧾 Use commits semânticos (`feat:`, `refactor:`, `docs:`, `test:`)
+3. 📚 Atualize o README sempre que adicionar recurso
+4. 🏷️ Crie tags mensais (`v1.0.0`, `v1.1.0`) com changelog curto
+5. 🛠️ Use Issues como roadmap público
 
-- Adicionar testes unitarios com PHPUnit/Pest
+---
+
+## 🔭 Próximos Passos
+
+- Adicionar testes unitários com PHPUnit/Pest
 - Separar em estrutura `src/` com autoload via Composer
-- Incluir exemplos de API com validacao de entrada
-- Adicionar CI no GitHub Actions
+- Incluir exemplos de API com validação de entrada
+- Adicionar CI com GitHub Actions
 
-## Licenca
+---
 
-Sugestao: MIT
+## 📜 Licença
+
+Sugestão: **MIT**
+
+---
+
+## 👨‍💻 Autor
+
+**Desenvolvido por Edmilson Rodrigues**
